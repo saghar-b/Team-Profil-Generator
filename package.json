@@ -13,9 +13,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "inquirer": "^6.3.1"
+    "inquirer": "^6.5.2"
   },
   "devDependencies": {
     "jest": "^24.8.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saghar-b/Team-Profil-Generator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/saghar-b/Team-Profil-Generator/issues"
+  },
+  "homepage": "https://github.com/saghar-b/Team-Profil-Generator#readme"
 }
