@@ -48,7 +48,7 @@ const managerOptions = async function () {
             type: 'list',
             name: 'employeeOptions',
             message: 'please select an Employee',
-            choices: ['Engineer', 'Inter', 'finish building my team']
+            choices: ['Engineer', 'Intern', 'finish building my team']
         }
         // TODO: presented with a menu with the option to add an engineer
         //  or an intern or to finish building my team
@@ -147,45 +147,11 @@ const creatHTMLfile =async function(){
 
    
 //  try{
-   let text=` let employeeSectoion= $('#employee')
-    let cardTag= $('<div>')
-    cardTag.addClass('card')
-    let ch= $('<div>')
-     ch.addClass('cardHead')
- 
-    
-     let h3Tag=$('<h3>')
-    h3Tag.text("saghar")
-    
-    let h4Tag=$('<h4>')
-    h4Tag.text("saghar")
-    
-    ch.append(h3Tag)
-    ch.append(h4Tag)
- 
-    cardTag.append(ch)
-    employeeSectoion.append(cardTag);`
-    const htmltext = htmlFile(text);
+
+   
+    const htmltext = htmlFile();
 
     await writePromise("team.html",htmltext )
-// let h2=$('h2')
-// h2.text('saghar')
-
-    // let employeeSectoion= document.querySelector('#employee')
-//    let cardTag= document.createAttribute('<div>')
-//    cardTag.classList.add('card')
-//    employeeSectoion.appendChild(cardTag);
-//    let hedearTag=document.createAttribute('<div>')
-//    headerTag.classList.add('header')
-//    cardTag.appendChild(headerTag)
-//    let h3Tag=document.createAttribute('<h3>')
-//    h3Tag.textContent="saghar"
-   
-//    let h4Tag=document.createAttribute('<h4>')
-//    h4Tag.textContent="saghar"
-
-//    headerTag.appendChild(h3Tag)
-//    headerTag.appendChild(h4Tag)
 
     employeeInfo.forEach(index =>{
         let role=index.role;
@@ -198,7 +164,71 @@ const creatHTMLfile =async function(){
 //  }
 
 }
-function htmlFile(text){
+function htmlFile(){
+    let text="";
+    employeeInfo.forEach(index =>{
+        text +=`  
+        employeeSectoion= $('#employee')
+        cardTag= $('<div>')
+       cardTag.addClass('card')
+        ch= $('<div>')
+        ch.addClass('cardHead')
+        h3Tag=$('<h3>')
+       h3Tag.text('${index.employeeObj.getRole()}') 
+        h4Tag=$('<h4>')
+       h4Tag.text('${index.employeeObj.getName()}')
+       ch.append(h3Tag)
+       ch.append(h4Tag)
+       cardTag.append(ch)
+       idTag =$('<h5>')
+       idTag.addClass('info')
+       idTag.text('${index.employeeObj.getId()}')
+       cardTag.append(idTag)
+       h5EmailTag=$('<h5>')
+       h5EmailTag.addClass('info')  
+       h5EmailTag.text("email :")
+       aEmailTag=$('<a>')
+        aEmailTag.attr('href','mailto:${index.employeeObj.getEmail()}')
+        aEmailTag.text('${index.employeeObj.getEmail()}')
+        h5EmailTag.append(aEmailTag)
+       cardTag.append(h5EmailTag)
+       employeeSectoion.append(cardTag);`
+       if(index.role === "Manager"){
+           text += `
+           officeTag =$('<h5>')
+           officeTag.addClass('info')
+           officeTag.text('Office Number:${index.employeeObj.getOfficeNumber()}')
+       cardTag.append(officeTag)
+           `
+        //    console.log(text)
+       }else if(index.role === "Engineer"){
+        text += `
+        githubTag =$('<h5>')
+        githubTag.addClass('info')
+        githubTag.text('GitHub username:')
+    cardTag.append(githubTag)
+    aGitTag=$('<a>')
+    aGitTag.attr('href','${index.employeeObj.getGithub()}')
+    aGitTag.attr('target','_blanck')
+    aGitTag.text('${index.employeeObj.getGithub()}')
+    githubTag.append(aGitTag)
+        `
+       }
+       else if(index.role === "Intern"){
+        text += `
+        schoolTag =$('<h5>')
+        schoolTag.addClass('info')
+        schoolTag.text('School: ${index.employeeObj.getSchool()}')
+    cardTag.append(schoolTag)
+        ` 
+
+       }
+
+
+    });
+
+    // <h5 class="info">email: <a href="mailto:saghar">saghar@gmail</a></h5>
+
     return `
     <!DOCTYPE html>
 <html lang="en">
@@ -272,6 +302,7 @@ function htmlFile(text){
         </section>
     </main>
     <script>
+    employeeSectoion= $('#employee')
     
   ${text}
    
