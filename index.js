@@ -7,11 +7,6 @@ const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const Manager = require('./lib/Manager');
 let employeeInfo = [];
-let employee={
-    role:"",
-    employeeObj:""
-}
-
 
 
 // TODO: Enter the team manager’s name, employee ID, email address, and office number
@@ -19,16 +14,11 @@ const init = async function () {
     try {
         const generalAnswer = await getGeneralInfo();
         const managerInfo = await getManagerInfo();
-        let newManager = new Manager(generalAnswer.emplyeeName, generalAnswer.employeeID, generalAnswer.employeeEmail, managerInfo.managerOfficeNum)
-        employee={
-            role:newManager.getRole(),
-            employeeObj:newManager
-        }
-        employeeInfo.push(employee);
+        employeeInfo.push(new Manager(generalAnswer.emplyeeName, generalAnswer.employeeID, generalAnswer.employeeEmail,
+            managerInfo.managerOfficeNum))
         managerOptions();
-        //  creatHTMLfile()
     } catch {
-
+        throw console.error();
     }
 
 }
@@ -60,28 +50,17 @@ const managerOptions = async function () {
             console.log("//////Engineer Information//////")
             const generalAnswerM = await getGeneralInfo();
             const enginerrAns = await getEngineerlInfo();
-            let newEngineer =new Engineer(generalAnswerM.emplyeeName, generalAnswerM.employeeID,
-                generalAnswerM.employeeEmail, enginerrAns.github)
-                
-                employee={
-                    role:newEngineer.getRole(),
-                    employeeObj:newEngineer
-                }
-                employeeInfo.push(employee);
+            employeeInfo.push(new Engineer(generalAnswerM.emplyeeName, generalAnswerM.employeeID,
+                generalAnswerM.employeeEmail, enginerrAns.github))
             managerOptions();
             break;
         // TODO: select the intern option
-        case 'Inter':
+        case 'Intern':
             console.log("//////Intern Information//////")
             const generalAnswerIn = await getGeneralInfo();
             const internAns = await getInternlInfo();
-            let newIntern = new Intern(generalAnswerIn.emplyeeName, generalAnswerIn.employeeID,
-                generalAnswerIn.employeeEmail, internAns.school)
-                employee={
-                    role:newIntern.getRole(),
-                    employeeObj:newIntern
-                }
-                employeeInfo.push(employee);
+            employeeInfo.push(new Intern(generalAnswerIn.emplyeeName, generalAnswerIn.employeeID,
+                generalAnswerIn.employeeEmail, internAns.school))
             managerOptions();
 
             break;
@@ -140,89 +119,74 @@ const getGeneralInfo = function () {
 }
 init()
 
-const creatHTMLfile =async function(){
-
-   
+const creatHTMLfile = async function () {
 
 
-   
-//  try{
-
-   
     const htmltext = htmlFile();
 
-    await writePromise("team.html",htmltext )
-
-    employeeInfo.forEach(index =>{
-        let role=index.role;
-        
-        console.log(index)
-    })
-        
-//  }catch{
-     
-//  }
+    await writePromise("team.html", htmltext)
 
 }
-function htmlFile(){
-    let text="";
-    employeeInfo.forEach(index =>{
-        text +=`  
+function htmlFile() {
+    let text = "";
+    employeeInfo.forEach(index => {
+        console.log(index.getRole())
+        text += `  
         employeeSectoion= $('#employee')
         cardTag= $('<div>')
        cardTag.addClass('card')
         ch= $('<div>')
         ch.addClass('cardHead')
         h3Tag=$('<h3>')
-       h3Tag.text('${index.employeeObj.getRole()}') 
+       h3Tag.text('${index.getRole()}') 
         h4Tag=$('<h4>')
-       h4Tag.text('${index.employeeObj.getName()}')
+       h4Tag.text('${index.getName()}')
        ch.append(h3Tag)
        ch.append(h4Tag)
        cardTag.append(ch)
        idTag =$('<h5>')
        idTag.addClass('info')
-       idTag.text('${index.employeeObj.getId()}')
+       idTag.text('${index.getId()}')
        cardTag.append(idTag)
        h5EmailTag=$('<h5>')
        h5EmailTag.addClass('info')  
        h5EmailTag.text("email :")
        aEmailTag=$('<a>')
-        aEmailTag.attr('href','mailto:${index.employeeObj.getEmail()}')
-        aEmailTag.text('${index.employeeObj.getEmail()}')
+        aEmailTag.attr('href','mailto:${index.getEmail()}')
+        aEmailTag.text('${index.getEmail()}')
         h5EmailTag.append(aEmailTag)
        cardTag.append(h5EmailTag)
        employeeSectoion.append(cardTag);`
-       if(index.role === "Manager"){
-           text += `
+        if (index.getRole() === "Manager") {
+            text += `
            officeTag =$('<h5>')
            officeTag.addClass('info')
-           officeTag.text('Office Number:${index.employeeObj.getOfficeNumber()}')
+           officeTag.text('Office Number:${index.getOfficeNumber()}')
        cardTag.append(officeTag)
            `
-        //    console.log(text)
-       }else if(index.role === "Engineer"){
-        text += `
+
+        } else if (index.getRole() === "Engineer") {
+            text += `
         githubTag =$('<h5>')
         githubTag.addClass('info')
         githubTag.text('GitHub username:')
     cardTag.append(githubTag)
     aGitTag=$('<a>')
-    aGitTag.attr('href','${index.employeeObj.getGithub()}')
+    aGitTag.attr('href','${index.getGithub()}')
     aGitTag.attr('target','_blanck')
-    aGitTag.text('${index.employeeObj.getGithub()}')
+    aGitTag.text('${index.getGithub()}')
     githubTag.append(aGitTag)
         `
-       }
-       else if(index.role === "Intern"){
-        text += `
+        }
+        else if (index.getRole() === "Intern") {
+            text += `
         schoolTag =$('<h5>')
         schoolTag.addClass('info')
-        schoolTag.text('School: ${index.employeeObj.getSchool()}')
+        schoolTag.text('School: ${index.getSchool()}')
     cardTag.append(schoolTag)
-        ` 
+        `
 
-       }
+        }
 
 
     });
@@ -266,6 +230,7 @@ function htmlFile(){
         #employee {
             display: flex;
             flex-direction: row;
+            flex-wrap: wrap;
         }
 
         .card {
@@ -311,8 +276,8 @@ function htmlFile(){
 
 </html>
     `
-// TODO: click on an email address in the HTMLTHEN my default 
-//       email program opens and populates the TO field of the email with the address
-// TODO: click on the GitHub username THEN that GitHub profile opens in a new tab
+    // TODO: click on an email address in the HTMLTHEN my default 
+    //       email program opens and populates the TO field of the email with the address
+    // TODO: click on the GitHub username THEN that GitHub profile opens in a new tab
 
 }
