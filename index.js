@@ -9,7 +9,8 @@ const Manager = require('./lib/Manager');
 let employeeInfo = [];
 
 
-// TODO: Enter the team manager’s name, employee ID, email address, and office number
+//Enter the team manager’s name, employee ID, email address, and office number
+// start function
 const init = async function () {
     try {
         const generalAnswer = await getGeneralInfo();
@@ -22,6 +23,8 @@ const init = async function () {
     }
 
 }
+
+// get Manager information(office number)
 function getManagerInfo() {
     return inquirer.prompt([
         {
@@ -32,6 +35,8 @@ function getManagerInfo() {
     ])
 
 }
+
+// manager options menue ( creat engineer or Inter, or quit)
 const managerOptions = async function () {
     const opt = await inquirer.prompt([
         {
@@ -40,12 +45,12 @@ const managerOptions = async function () {
             message: 'please select an Employee',
             choices: ['Engineer', 'Intern', 'finish building my team']
         }
-        // TODO: presented with a menu with the option to add an engineer
+        //presented with a menu with the option to add an engineer
         //  or an intern or to finish building my team
     ])
 
     switch (opt.employeeOptions) {
-        // TODO: select the engineer option
+        // select the engineer option
         case 'Engineer':
             console.log("//////Engineer Information//////")
             const generalAnswerM = await getGeneralInfo();
@@ -54,7 +59,7 @@ const managerOptions = async function () {
                 generalAnswerM.employeeEmail, enginerrAns.github))
             managerOptions();
             break;
-        // TODO: select the intern option
+        //select the intern option
         case 'Intern':
             console.log("//////Intern Information//////")
             const generalAnswerIn = await getGeneralInfo();
@@ -64,7 +69,7 @@ const managerOptions = async function () {
             managerOptions();
 
             break;
-        // TODO: exit the application, and the HTML is generated
+        //exit the application, and the HTML is generated
         case 'finish building my team':
             console.log("your team is:")
             console.table(employeeInfo)
@@ -78,6 +83,8 @@ const managerOptions = async function () {
 
 
 }
+
+// get engineer information(gitHub username)
 const getEngineerlInfo = function () {
     return inquirer.prompt([
         {
@@ -88,6 +95,8 @@ const getEngineerlInfo = function () {
     ])
 
 }
+
+// get Intern information(School name)
 const getInternlInfo = function () {
     return inquirer.prompt([
         {
@@ -98,6 +107,8 @@ const getInternlInfo = function () {
     ])
 
 }
+
+// get general information that is common for manager, Engineer, and Intern (name, id, email)
 const getGeneralInfo = function () {
     return inquirer.prompt([
         {
@@ -117,8 +128,11 @@ const getGeneralInfo = function () {
         },
     ])
 }
+
+// start the file
 init()
 
+// creat the team.html file 
 const creatHTMLfile = async function () {
 
 
@@ -127,6 +141,8 @@ const creatHTMLfile = async function () {
     await writePromise("team.html", htmltext)
 
 }
+
+// creat the html file text
 function htmlFile() {
     let text = "";
     employeeInfo.forEach(index => {

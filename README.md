@@ -39,6 +39,8 @@ you can see demo video in the link below:
 * By selecting the engineer option, then it prompted to enter the engineer’s name, ID, email, and GitHub username, and it taken back to the menu
 * By selecting the intern option, then it prompted to enter the intern’s name, ID, email, and school, and it taken back to the menu
 * By selecting finish building my team, it stop the questions and show a table of employee information and creat a team.html file that it open in browser with all the information
+* on the team.html, by clicking on the email, the email to will open
+* on the team.html, by clicking on the GitHub link, the gitHub page will open in a new tab
 
 
 
